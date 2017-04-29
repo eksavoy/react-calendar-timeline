@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import moment from 'moment'
-import './Timeline.scss'
 
 import Items from './items/Items'
 import InfoLabel from './layout/InfoLabel'

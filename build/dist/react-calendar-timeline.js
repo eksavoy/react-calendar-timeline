@@ -7,7 +7,7 @@
 		exports["ReactCalendarTimeline"] = factory(require("React"), require("moment"), require("interact"));
 	else
 		root["ReactCalendarTimeline"] = factory(root["React"], root["moment"], root["interact"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_10__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -90,37 +90,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	__webpack_require__(4);
-	
-	var _Items = __webpack_require__(8);
+	var _Items = __webpack_require__(4);
 	
 	var _Items2 = _interopRequireDefault(_Items);
 	
-	var _InfoLabel = __webpack_require__(12);
+	var _InfoLabel = __webpack_require__(8);
 	
 	var _InfoLabel2 = _interopRequireDefault(_InfoLabel);
 	
-	var _Sidebar = __webpack_require__(15);
+	var _Sidebar = __webpack_require__(11);
 	
 	var _Sidebar2 = _interopRequireDefault(_Sidebar);
 	
-	var _Header = __webpack_require__(16);
+	var _Header = __webpack_require__(12);
 	
 	var _Header2 = _interopRequireDefault(_Header);
 	
-	var _VerticalLines = __webpack_require__(17);
+	var _VerticalLines = __webpack_require__(13);
 	
 	var _VerticalLines2 = _interopRequireDefault(_VerticalLines);
 	
-	var _HorizontalLines = __webpack_require__(18);
+	var _HorizontalLines = __webpack_require__(14);
 	
 	var _HorizontalLines2 = _interopRequireDefault(_HorizontalLines);
 	
-	var _TodayLine = __webpack_require__(19);
+	var _TodayLine = __webpack_require__(15);
 	
 	var _TodayLine2 = _interopRequireDefault(_TodayLine);
 	
-	var _utils = __webpack_require__(11);
+	var _utils = __webpack_require__(7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1159,15 +1157,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1182,11 +1171,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Item = __webpack_require__(9);
+	var _Item = __webpack_require__(5);
 	
 	var _Item2 = _interopRequireDefault(_Item);
 	
-	var _utils = __webpack_require__(11);
+	var _utils = __webpack_require__(7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1198,12 +1187,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	// import ItemGroup from './ItemGroup'
 	
 	var canResizeLeft = function canResizeLeft(item, canResize) {
-	  var value = (0, _utils._get)(item, 'canResize') !== undefined ? (0, _utils._get)(item, 'canResize') : undefined.props.canResize;
+	  var value = (0, _utils._get)(item, 'canResize') !== undefined ? (0, _utils._get)(item, 'canResize') : canResize;
 	  return value === 'left' || value === 'both';
 	};
 	
 	var canResizeRight = function canResizeRight(item, canResize) {
-	  var value = (0, _utils._get)(item, 'canResize') !== undefined ? (0, _utils._get)(item, 'canResize') : undefined.props.canResize;
+	  var value = (0, _utils._get)(item, 'canResize') !== undefined ? (0, _utils._get)(item, 'canResize') : canResize;
 	  return value === 'right' || value === 'both' || value === true;
 	};
 	
@@ -1342,7 +1331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Items;
 
 /***/ },
-/* 9 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1359,7 +1348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _interact = __webpack_require__(10);
+	var _interact = __webpack_require__(6);
 	
 	var _interact2 = _interopRequireDefault(_interact);
 	
@@ -1367,7 +1356,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _utils = __webpack_require__(11);
+	var _utils = __webpack_require__(7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1870,13 +1859,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Item;
 
 /***/ },
-/* 10 */
+/* 6 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
 
 /***/ },
-/* 11 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2346,7 +2335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 12 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2361,7 +2350,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _function = __webpack_require__(13);
+	var _function = __webpack_require__(9);
 	
 	var _function2 = _interopRequireDefault(_function);
 	
@@ -2415,7 +2404,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 13 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2425,7 +2414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _shallowEqual = __webpack_require__(14);
+	var _shallowEqual = __webpack_require__(10);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
@@ -2436,7 +2425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 14 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2474,7 +2463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 15 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2489,7 +2478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(11);
+	var _utils = __webpack_require__(7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -2671,7 +2660,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 16 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2690,7 +2679,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _utils = __webpack_require__(11);
+	var _utils = __webpack_require__(7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -2862,35 +2851,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      // add the top header
 	      if (twoHeaders) {
-	        (function () {
-	          var nextUnit = (0, _utils.getNextUnit)(minUnit);
+	        var nextUnit = (0, _utils.getNextUnit)(minUnit);
 	
-	          (0, _utils.iterateTimes)(visibleTimeStart, visibleTimeEnd, nextUnit, timeSteps, function (time, nextTime) {
-	            var startTime = Math.max(visibleTimeStart, time.valueOf());
-	            var endTime = Math.min(visibleTimeEnd, nextTime.valueOf());
-	            var left = Math.round((startTime.valueOf() - canvasTimeStart) * ratio, -2);
-	            var right = Math.round((endTime.valueOf() - canvasTimeStart) * ratio, -2);
-	            var labelWidth = right - left;
-	            var leftCorrect = fixedHeader === 'fixed' ? Math.round((canvasTimeStart - visibleTimeStart) * ratio) - 1 : 0;
+	        (0, _utils.iterateTimes)(visibleTimeStart, visibleTimeEnd, nextUnit, timeSteps, function (time, nextTime) {
+	          var startTime = Math.max(visibleTimeStart, time.valueOf());
+	          var endTime = Math.min(visibleTimeEnd, nextTime.valueOf());
+	          var left = Math.round((startTime.valueOf() - canvasTimeStart) * ratio, -2);
+	          var right = Math.round((endTime.valueOf() - canvasTimeStart) * ratio, -2);
+	          var labelWidth = right - left;
+	          var leftCorrect = fixedHeader === 'fixed' ? Math.round((canvasTimeStart - visibleTimeStart) * ratio) - 1 : 0;
 	
-	            timeLabels.push(_react2.default.createElement(
-	              'div',
-	              { key: 'top-label-' + time.valueOf(),
-	                href: '#',
-	                className: 'rct-label-group',
-	                'data-time': time,
-	                'data-unit': nextUnit,
-	                style: {
-	                  left: left + leftCorrect + 'px',
-	                  width: labelWidth + 'px',
-	                  height: headerLabelGroupHeight + 'px',
-	                  lineHeight: headerLabelGroupHeight + 'px',
-	                  cursor: 'pointer'
-	                } },
-	              _this3.headerLabel(time, nextUnit, labelWidth)
-	            ));
-	          });
-	        })();
+	          timeLabels.push(_react2.default.createElement(
+	            'div',
+	            { key: 'top-label-' + time.valueOf(),
+	              href: '#',
+	              className: 'rct-label-group',
+	              'data-time': time,
+	              'data-unit': nextUnit,
+	              style: {
+	                left: left + leftCorrect + 'px',
+	                width: labelWidth + 'px',
+	                height: headerLabelGroupHeight + 'px',
+	                lineHeight: headerLabelGroupHeight + 'px',
+	                cursor: 'pointer'
+	              } },
+	            _this3.headerLabel(time, nextUnit, labelWidth)
+	          ));
+	        });
 	      }
 	
 	      (0, _utils.iterateTimes)(canvasTimeStart, canvasTimeEnd, minUnit, timeSteps, function (time, nextTime) {
@@ -2982,7 +2969,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 17 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2997,7 +2984,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(11);
+	var _utils = __webpack_require__(7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -3089,7 +3076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 18 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3174,7 +3161,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 19 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

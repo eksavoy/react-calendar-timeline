@@ -16,8 +16,6 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
-require('./Timeline.css');
-
 var _Items = require('./items/Items');
 
 var _Items2 = _interopRequireDefault(_Items);
