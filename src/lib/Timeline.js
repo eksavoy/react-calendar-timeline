@@ -253,7 +253,6 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   touchMove = (e) => {
-    console.log(e, this.lastSingleTouch, this.props.fixedHeader);
     if (this.state.dragTime || this.state.resizeTime) {
       e.preventDefault()
       return

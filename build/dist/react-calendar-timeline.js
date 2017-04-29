@@ -785,7 +785,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	
 	  this.touchMove = function (e) {
-	    console.log(e, _this3.lastSingleTouch, _this3.props.fixedHeader);
 	    if (_this3.state.dragTime || _this3.state.resizeTime) {
 	      e.preventDefault();
 	      return;
