@@ -692,8 +692,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  defaultTimeStart: _react.PropTypes.object,
 	  defaultTimeEnd: _react.PropTypes.object,
 	
-	  visibleTimeStart: _react.PropTypes.object,
-	  visibleTimeEnd: _react.PropTypes.object,
+	  visibleTimeStart: _react.PropTypes.number,
+	  visibleTimeEnd: _react.PropTypes.number,
 	  onTimeChange: _react.PropTypes.func,
 	  onTimeInit: _react.PropTypes.func,
 	  onBoundsChange: _react.PropTypes.func,
@@ -785,7 +785,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	
 	  this.touchMove = function (e) {
-	    console.log(e);
+	    console.log(e, _this3.lastSingleTouch, _this3.props.fixedHeader);
 	    if (_this3.state.dragTime || _this3.state.resizeTime) {
 	      e.preventDefault();
 	      return;
@@ -2955,8 +2955,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  canvasTimeEnd: _react2.default.PropTypes.number.isRequired,
 	  canvasWidth: _react2.default.PropTypes.number.isRequired,
 	  lineHeight: _react2.default.PropTypes.number.isRequired,
-	  visibleTimeStart: _react2.default.PropTypes.object.isRequired,
-	  visibleTimeEnd: _react2.default.PropTypes.object.isRequired,
+	  visibleTimeStart: _react2.default.PropTypes.number.isRequired,
+	  visibleTimeEnd: _react2.default.PropTypes.number.isRequired,
 	  // visibleTimeEnd: React.PropTypes.number.isRequired,
 	  minUnit: _react2.default.PropTypes.string.isRequired,
 	  timeSteps: _react2.default.PropTypes.object.isRequired,
