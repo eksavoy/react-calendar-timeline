@@ -24,9 +24,9 @@
     }
   </style>
   <script>
-    GROUP_COUNT = 30
-    ITEM_COUNT = 1000
-    DAYS_IN_PAST = 30
+    GROUP_COUNT = 5
+    ITEM_COUNT = 10
+    DAYS_IN_PAST = 5
 
     var groups = []
     for (var i = 0; i < GROUP_COUNT; i++) {
@@ -75,6 +75,8 @@
       itemTouchSendsClick: false,
       stackItems: true,
       itemHeightRatio: 0.75,
+
+      lineHeight: 100,
 
       defaultTimeStart: moment().startOf('day').toDate(),
       defaultTimeEnd: moment().startOf('day').add(1, 'day').toDate(),

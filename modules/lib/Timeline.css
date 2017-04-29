@@ -96,7 +96,7 @@
     cursor: pointer;
     border-left: 2px solid #bbb;
     color: #ffffff;
-    background: #c52020;
+    background: #b48456;
     border-bottom: 1px solid #bbb;
     cursor: pointer; }
   .react-calendar-timeline .rct-header .rct-label {
@@ -111,7 +111,7 @@
     cursor: pointer; }
     .react-calendar-timeline .rct-header .rct-label.rct-label-only {
       color: #ffffff;
-      background: #c52020; }
+      background: #b48456; }
     .react-calendar-timeline .rct-header .rct-label.rct-first-of-type {
       border-left: 2px solid #bbb; }
 .react-calendar-timeline .rct-sidebar {
@@ -124,7 +124,7 @@
   .react-calendar-timeline .rct-sidebar .rct-sidebar-header {
     margin: 0;
     color: #ffffff;
-    background: #c52020;
+    background: #b48456;
     border-right: 1px solid #bbb;
     box-sizing: 'border-box';
     border-bottom: 1px solid #bbb;
