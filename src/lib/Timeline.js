@@ -84,8 +84,8 @@ export default class ReactCalendarTimeline extends Component {
     defaultTimeStart: PropTypes.object,
     defaultTimeEnd: PropTypes.object,
 
-    visibleTimeStart: PropTypes.number,
-    visibleTimeEnd: PropTypes.number,
+    visibleTimeStart: PropTypes.object,
+    visibleTimeEnd: PropTypes.object,
     onTimeChange: PropTypes.func,
     onTimeInit: PropTypes.func,
     onBoundsChange: PropTypes.func,
