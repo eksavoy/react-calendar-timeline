@@ -214,6 +214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.state.height = height;
 	    _this.state.groupHeights = groupHeights;
 	    _this.state.groupTops = groupTops;
+	
 	    return _this;
 	  }
 	
@@ -245,6 +246,100 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.refs.scrollComponent.removeEventListener('touchstart', this.touchStart);
 	      this.refs.scrollComponent.removeEventListener('touchmove', this.touchMove);
 	      this.refs.scrollComponent.removeEventListener('touchend', this.touchEnd);
+	    }
+	  }, {
+	    key: 'touchDoubleClick',
+	    value: function touchDoubleClick(e) {
+	
+	      if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item')) {
+	        if (this.state.selectedItem) {
+	          this.selectItem(null);
+	        } else if (this.props.onCanvasClick) {
+	          var _rowAndTimeFromTouchE = this.rowAndTimeFromTouchEvent(e),
+	              _rowAndTimeFromTouchE2 = _slicedToArray(_rowAndTimeFromTouchE, 2),
+	              row = _rowAndTimeFromTouchE2[0],
+	              time = _rowAndTimeFromTouchE2[1];
+	
+	          if (row >= 0 && row < this.props.groups.length && this.props.onCanvasDoubleClick) {
+	            this.props.onCanvasDoubleClick(this.props.groups[row], time, e);
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'touchClick',
+	    value: function touchClick(e) {
+	      // if not clicking on an item
+	      if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item')) {
+	        if (this.state.selectedItem) {
+	          this.selectItem(null);
+	        } else if (this.props.onCanvasClick) {
+	          var _rowAndTimeFromTouchE3 = this.rowAndTimeFromTouchEvent(e),
+	              _rowAndTimeFromTouchE4 = _slicedToArray(_rowAndTimeFromTouchE3, 2),
+	              row = _rowAndTimeFromTouchE4[0],
+	              time = _rowAndTimeFromTouchE4[1];
+	
+	          if (row >= 0 && row < this.props.groups.length) {
+	            this.props.onCanvasClick(this.props.groups[row], time, e);
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'rowAndTimeFromTouchEvent',
+	    value: function rowAndTimeFromTouchEvent(e) {
+	      var _state = this.state,
+	          canvasTimeStart = _state.canvasTimeStart,
+	          width = _state.width,
+	          visibleTimeStart = _state.visibleTimeStart,
+	          visibleTimeEnd = _state.visibleTimeEnd,
+	          groupTops = _state.groupTops,
+	          topOffset = _state.topOffset;
+	
+	      var zoom = visibleTimeEnd - visibleTimeStart;
+	      var canvasTimeEnd = canvasTimeStart + zoom * 3;
+	      var canvasWidth = width * 3;
+	      var pageX = e.touches[0].clientX;
+	      var pageY = e.touches[0].clientY;
+	      var ratio = (canvasTimeEnd - canvasTimeStart) / canvasWidth;
+	      var boundingRect = this.refs.scrollComponent.getBoundingClientRect();
+	      var timePosition = visibleTimeStart + ratio * (pageX - boundingRect.left);
+	      if (this.props.dragSnap) {
+	        timePosition = Math.round(timePosition / this.props.dragSnap) * this.props.dragSnap;
+	      }
+	
+	      var groupIndex = 0;
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+	
+	      try {
+	        for (var _iterator = Object.keys(groupTops)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var key = _step.value;
+	
+	          var item = groupTops[key];
+	          if (pageY - topOffset > item) {
+	            groupIndex = parseInt(key, 10);
+	          } else {
+	            break;
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+	
+	      return [groupIndex, timePosition];
 	    }
 	  }, {
 	    key: 'resize',
@@ -292,11 +387,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'updateDimensions',
 	    value: function updateDimensions(items, groups) {
-	      var _state = this.state,
-	          canvasTimeStart = _state.canvasTimeStart,
-	          visibleTimeStart = _state.visibleTimeStart,
-	          visibleTimeEnd = _state.visibleTimeEnd,
-	          width = _state.width;
+	      var _state2 = this.state,
+	          canvasTimeStart = _state2.canvasTimeStart,
+	          visibleTimeStart = _state2.visibleTimeStart,
+	          visibleTimeEnd = _state2.visibleTimeEnd,
+	          width = _state2.width;
 	
 	      var _stackItems2 = this.stackItems(items, groups, canvasTimeStart, visibleTimeStart, visibleTimeEnd, width),
 	          dimensionItems = _stackItems2.dimensionItems,
@@ -340,24 +435,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'rowAndTimeFromEvent',
 	    value: function rowAndTimeFromEvent(e) {
-	      var _props2 = this.props,
-	          lineHeight = _props2.lineHeight,
-	          dragSnap = _props2.dragSnap;
-	      var _state2 = this.state,
-	          width = _state2.width,
-	          visibleTimeStart = _state2.visibleTimeStart,
-	          visibleTimeEnd = _state2.visibleTimeEnd;
+	      var _state3 = this.state,
+	          canvasTimeStart = _state3.canvasTimeStart,
+	          width = _state3.width,
+	          visibleTimeStart = _state3.visibleTimeStart,
+	          visibleTimeEnd = _state3.visibleTimeEnd,
+	          groupTops = _state3.groupTops,
+	          topOffset = _state3.topOffset;
 	
+	      var zoom = visibleTimeEnd - visibleTimeStart;
+	      var canvasTimeEnd = canvasTimeStart + zoom * 3;
+	      var canvasWidth = width * 3;
+	      var pageX = e.pageX,
+	          pageY = e.pageY;
 	
-	      var parentPosition = (0, _utils.getParentPosition)(e.currentTarget);
-	      var x = e.clientX - parentPosition.x;
-	      var y = e.clientY - parentPosition.y;
+	      var ratio = (canvasTimeEnd - canvasTimeStart) / canvasWidth;
+	      var boundingRect = this.refs.scrollComponent.getBoundingClientRect();
+	      var timePosition = visibleTimeStart + ratio * (pageX - boundingRect.left);
+	      if (this.props.dragSnap) {
+	        timePosition = Math.round(timePosition / this.props.dragSnap) * this.props.dragSnap;
+	      }
 	
-	      var row = Math.floor((y - lineHeight * 2) / lineHeight);
-	      var time = Math.round(visibleTimeStart + x / width * (visibleTimeEnd - visibleTimeStart));
-	      time = Math.floor(time / dragSnap) * dragSnap;
+	      var groupIndex = 0;
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
 	
-	      return [row, time];
+	      try {
+	        for (var _iterator2 = Object.keys(groupTops)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var key = _step2.value;
+	
+	          var item = groupTops[key];
+	          if (pageY - topOffset > item) {
+	            groupIndex = parseInt(key, 10);
+	          } else {
+	            break;
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+	
+	      return [groupIndex, timePosition];
 	    }
 	  }, {
 	    key: 'todayLine',
@@ -484,22 +614,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'stackItems',
 	    value: function stackItems(items, groups, canvasTimeStart, visibleTimeStart, visibleTimeEnd, width) {
-	      var _props3 = this.props,
-	          keys = _props3.keys,
-	          dragSnap = _props3.dragSnap,
-	          lineHeight = _props3.lineHeight,
-	          headerLabelGroupHeight = _props3.headerLabelGroupHeight,
-	          headerLabelHeight = _props3.headerLabelHeight,
-	          stackItems = _props3.stackItems,
-	          fullUpdate = _props3.fullUpdate,
-	          itemHeightRatio = _props3.itemHeightRatio;
-	      var _state3 = this.state,
-	          draggingItem = _state3.draggingItem,
-	          dragTime = _state3.dragTime,
-	          resizingItem = _state3.resizingItem,
-	          resizingEdge = _state3.resizingEdge,
-	          resizeTime = _state3.resizeTime,
-	          newGroupOrder = _state3.newGroupOrder;
+	      var _props2 = this.props,
+	          keys = _props2.keys,
+	          dragSnap = _props2.dragSnap,
+	          lineHeight = _props2.lineHeight,
+	          headerLabelGroupHeight = _props2.headerLabelGroupHeight,
+	          headerLabelHeight = _props2.headerLabelHeight,
+	          stackItems = _props2.stackItems,
+	          fullUpdate = _props2.fullUpdate,
+	          itemHeightRatio = _props2.itemHeightRatio;
+	      var _state4 = this.state,
+	          draggingItem = _state4.draggingItem,
+	          dragTime = _state4.dragTime,
+	          resizingItem = _state4.resizingItem,
+	          resizingEdge = _state4.resizingEdge,
+	          resizeTime = _state4.resizeTime,
+	          newGroupOrder = _state4.newGroupOrder;
 	
 	      var zoom = visibleTimeEnd - visibleTimeStart;
 	      var canvasTimeEnd = canvasTimeStart + zoom * 3;
@@ -549,26 +679,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _props4 = this.props,
-	          items = _props4.items,
-	          groups = _props4.groups,
-	          headerLabelGroupHeight = _props4.headerLabelGroupHeight,
-	          headerLabelHeight = _props4.headerLabelHeight,
-	          sidebarWidth = _props4.sidebarWidth,
-	          timeSteps = _props4.timeSteps;
-	      var _state4 = this.state,
-	          draggingItem = _state4.draggingItem,
-	          resizingItem = _state4.resizingItem,
-	          isDragging = _state4.isDragging,
-	          width = _state4.width,
-	          visibleTimeStart = _state4.visibleTimeStart,
-	          visibleTimeEnd = _state4.visibleTimeEnd,
-	          canvasTimeStart = _state4.canvasTimeStart;
+	      var _props3 = this.props,
+	          items = _props3.items,
+	          groups = _props3.groups,
+	          headerLabelGroupHeight = _props3.headerLabelGroupHeight,
+	          headerLabelHeight = _props3.headerLabelHeight,
+	          sidebarWidth = _props3.sidebarWidth,
+	          timeSteps = _props3.timeSteps;
 	      var _state5 = this.state,
-	          dimensionItems = _state5.dimensionItems,
-	          height = _state5.height,
-	          groupHeights = _state5.groupHeights,
-	          groupTops = _state5.groupTops;
+	          draggingItem = _state5.draggingItem,
+	          resizingItem = _state5.resizingItem,
+	          isDragging = _state5.isDragging,
+	          width = _state5.width,
+	          visibleTimeStart = _state5.visibleTimeStart,
+	          visibleTimeEnd = _state5.visibleTimeEnd,
+	          canvasTimeStart = _state5.canvasTimeStart;
+	      var _state6 = this.state,
+	          dimensionItems = _state6.dimensionItems,
+	          height = _state6.height,
+	          groupHeights = _state6.groupHeights,
+	          groupTops = _state6.groupTops;
 	
 	      var zoom = visibleTimeEnd - visibleTimeStart;
 	      var canvasTimeEnd = canvasTimeStart + zoom * 3;
@@ -766,6 +896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var _this3 = this;
 	
 	  this.touchStart = function (e) {
+	
 	    if (e.touches.length === 2) {
 	      e.preventDefault();
 	
@@ -774,6 +905,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this3.lastSingleTouch = null;
 	    } else if (e.touches.length === 1 && _this3.props.fixedHeader === 'fixed') {
 	      e.preventDefault();
+	
+	      if (_this3.lastTouchStart) {
+	        if (e.timeStamp - _this3.lastTouchStart < 400) {
+	          _this3.touchDoubleClick(e);
+	        } else {
+	          _this3.lastTouchStart = e.timeStamp;
+	          _this3.touchClick(e);
+	        }
+	      } else {
+	        _this3.lastTouchStart = e.timeStamp;
+	        _this3.touchClick(e);
+	      }
 	
 	      var x = e.touches[0].clientX;
 	      var y = e.touches[0].clientY;
@@ -1009,8 +1152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            time = _rowAndTimeFromEvent2[1];
 	
 	        if (row >= 0 && row < _this3.props.groups.length) {
-	          var groupId = (0, _utils._get)(_this3.props.groups[row], _this3.props.keys.groupIdKey);
-	          _this3.props.onCanvasClick(groupId, time, e);
+	          _this3.props.onCanvasClick(_this3.props.groups[row], time, e);
 	        }
 	      }
 	    }
@@ -1053,9 +1195,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.handleMouseDown = function (e) {
 	    var topOffset = _this3.state.topOffset;
 	    var pageY = e.pageY;
-	    var _props5 = _this3.props,
-	        headerLabelGroupHeight = _props5.headerLabelGroupHeight,
-	        headerLabelHeight = _props5.headerLabelHeight;
+	    var _props4 = _this3.props,
+	        headerLabelGroupHeight = _props4.headerLabelGroupHeight,
+	        headerLabelHeight = _props4.headerLabelHeight;
 	
 	    var headerHeight = headerLabelGroupHeight + headerLabelHeight;
 	
@@ -1083,60 +1225,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	
 	  this.handleDoubleClick = function (e) {
-	    var _state6 = _this3.state,
-	        canvasTimeStart = _state6.canvasTimeStart,
-	        width = _state6.width,
-	        visibleTimeStart = _state6.visibleTimeStart,
-	        visibleTimeEnd = _state6.visibleTimeEnd,
-	        groupTops = _state6.groupTops,
-	        topOffset = _state6.topOffset;
+	    var _rowAndTimeFromEvent3 = _this3.rowAndTimeFromEvent(e),
+	        _rowAndTimeFromEvent4 = _slicedToArray(_rowAndTimeFromEvent3, 2),
+	        row = _rowAndTimeFromEvent4[0],
+	        time = _rowAndTimeFromEvent4[1];
 	
-	    var zoom = visibleTimeEnd - visibleTimeStart;
-	    var canvasTimeEnd = canvasTimeStart + zoom * 3;
-	    var canvasWidth = width * 3;
-	    var pageX = e.pageX,
-	        pageY = e.pageY;
-	
-	    var ratio = (canvasTimeEnd - canvasTimeStart) / canvasWidth;
-	    var boundingRect = _this3.refs.scrollComponent.getBoundingClientRect();
-	    var timePosition = visibleTimeStart + ratio * (pageX - boundingRect.left);
-	    if (_this3.props.dragSnap) {
-	      timePosition = Math.round(timePosition / _this3.props.dragSnap) * _this3.props.dragSnap;
-	    }
-	
-	    var groupIndex = 0;
-	    var _iteratorNormalCompletion = true;
-	    var _didIteratorError = false;
-	    var _iteratorError = undefined;
-	
-	    try {
-	      for (var _iterator = Object.keys(groupTops)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	        var key = _step.value;
-	
-	        var item = groupTops[key];
-	        if (pageY - topOffset > item) {
-	          groupIndex = parseInt(key, 10);
-	        } else {
-	          break;
-	        }
-	      }
-	    } catch (err) {
-	      _didIteratorError = true;
-	      _iteratorError = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion && _iterator.return) {
-	          _iterator.return();
-	        }
-	      } finally {
-	        if (_didIteratorError) {
-	          throw _iteratorError;
-	        }
-	      }
-	    }
-	
-	    if (_this3.props.onCanvasDoubleClick) {
-	      _this3.props.onCanvasDoubleClick(_this3.props.groups[groupIndex], timePosition, e);
+	    if (row >= 0 && row < _this3.props.groups.length && _this3.props.onCanvasDoubleClick) {
+	      _this3.props.onCanvasDoubleClick(_this3.props.groups[row], time, e);
 	    }
 	  };
 	};
