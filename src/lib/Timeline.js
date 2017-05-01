@@ -238,10 +238,10 @@ export default class ReactCalendarTimeline extends Component {
     if (!hasSomeParentTheClass(e.target, 'rct-item')) {
       if (this.state.selectedItem) {
         this.selectItem(null)
-      } else if (this.props.onCanvasClick) {
+      } else if (this.props.onCanvasDoubleClick) {
         const [row, time] = this.rowAndTimeFromTouchEvent(e);
 
-        if (row >= 0 && row < this.props.groups.length && this.props.onCanvasDoubleClick) {
+        if (row >= 0 && row < this.props.groups.length) {
           this.props.onCanvasDoubleClick(this.props.groups[row], time, e)
         }
       }

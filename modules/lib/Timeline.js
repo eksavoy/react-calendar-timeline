@@ -180,13 +180,13 @@ var ReactCalendarTimeline = function (_Component) {
       if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item')) {
         if (this.state.selectedItem) {
           this.selectItem(null);
-        } else if (this.props.onCanvasClick) {
+        } else if (this.props.onCanvasDoubleClick) {
           var _rowAndTimeFromTouchE = this.rowAndTimeFromTouchEvent(e),
               _rowAndTimeFromTouchE2 = _slicedToArray(_rowAndTimeFromTouchE, 2),
               row = _rowAndTimeFromTouchE2[0],
               time = _rowAndTimeFromTouchE2[1];
 
-          if (row >= 0 && row < this.props.groups.length && this.props.onCanvasDoubleClick) {
+          if (row >= 0 && row < this.props.groups.length) {
             this.props.onCanvasDoubleClick(this.props.groups[row], time, e);
           }
         }
