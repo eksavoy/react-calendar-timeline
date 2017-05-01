@@ -234,10 +234,17 @@ export default class ReactCalendarTimeline extends Component {
     this.refs.scrollComponent.removeEventListener('touchend', this.touchEnd)
   }
   touchDoubleClick(e){
-    const [row, time] = this.rowAndTimeFromTouchEvent(e);
 
-    if (row >= 0 && row < this.props.groups.length && this.props.onCanvasDoubleClick) {
-      this.props.onCanvasDoubleClick(this.props.groups[row], time, e)
+    if (!hasSomeParentTheClass(e.target, 'rct-item')) {
+      if (this.state.selectedItem) {
+        this.selectItem(null)
+      } else if (this.props.onCanvasClick) {
+        const [row, time] = this.rowAndTimeFromTouchEvent(e);
+
+        if (row >= 0 && row < this.props.groups.length && this.props.onCanvasDoubleClick) {
+          this.props.onCanvasDoubleClick(this.props.groups[row], time, e)
+        }
+      }
     }
   }
 
@@ -249,8 +256,7 @@ export default class ReactCalendarTimeline extends Component {
       } else if (this.props.onCanvasClick) {
         const [row, time] = this.rowAndTimeFromTouchEvent(e);
         if (row >= 0 && row < this.props.groups.length) {
-          const groupId = _get(this.props.groups[row], this.props.keys.groupIdKey)
-          this.props.onCanvasClick(groupId, time, e)
+          this.props.onCanvasClick(this.props.groups[row], time, e)
         }
       }
     }
@@ -624,8 +630,7 @@ export default class ReactCalendarTimeline extends Component {
       } else if (this.props.onCanvasClick) {
         const [row, time] = this.rowAndTimeFromEvent(e);
         if (row >= 0 && row < this.props.groups.length) {
-          const groupId = _get(this.props.groups[row], this.props.keys.groupIdKey)
-          this.props.onCanvasClick(groupId, time, e)
+          this.props.onCanvasClick(this.props.groups[row], time, e)
         }
       }
     }
