@@ -206,6 +206,7 @@ export default class ReactCalendarTimeline extends Component {
     this.state.height = height
     this.state.groupHeights = groupHeights
     this.state.groupTops = groupTops
+
   }
 
   componentDidMount () {
@@ -232,8 +233,58 @@ export default class ReactCalendarTimeline extends Component {
     this.refs.scrollComponent.removeEventListener('touchmove', this.touchMove)
     this.refs.scrollComponent.removeEventListener('touchend', this.touchEnd)
   }
+  touchDoubleClick(e){
+    const [row, time] = this.rowAndTimeFromTouchEvent(e);
+
+    if (row >= 0 && row < this.props.groups.length && this.props.onCanvasDoubleClick) {
+      this.props.onCanvasDoubleClick(this.props.groups[row], time, e)
+    }
+  }
+
+  touchClick(e){
+    // if not clicking on an item
+    if (!hasSomeParentTheClass(e.target, 'rct-item')) {
+      if (this.state.selectedItem) {
+        this.selectItem(null)
+      } else if (this.props.onCanvasClick) {
+        const [row, time] = this.rowAndTimeFromTouchEvent(e);
+        if (row >= 0 && row < this.props.groups.length) {
+          const groupId = _get(this.props.groups[row], this.props.keys.groupIdKey)
+          this.props.onCanvasClick(groupId, time, e)
+        }
+      }
+    }
+  }
+
+  rowAndTimeFromTouchEvent(e){
+    const { canvasTimeStart, width, visibleTimeStart, visibleTimeEnd, groupTops, topOffset } = this.state
+    const zoom = visibleTimeEnd - visibleTimeStart
+    const canvasTimeEnd = canvasTimeStart + zoom * 3
+    const canvasWidth = width * 3
+    let pageX = e.touches[0].clientX
+    let pageY = e.touches[0].clientY
+    const ratio = (canvasTimeEnd - canvasTimeStart) / canvasWidth
+    const boundingRect = this.refs.scrollComponent.getBoundingClientRect()
+    let timePosition = visibleTimeStart + ratio * (pageX - boundingRect.left)
+    if (this.props.dragSnap) {
+      timePosition = Math.round(timePosition / this.props.dragSnap) * this.props.dragSnap
+    }
+
+    let groupIndex = 0
+    for (var key of Object.keys(groupTops)) {
+      var item = groupTops[key]
+      if (pageY - topOffset > item) {
+        groupIndex = parseInt(key, 10)
+      } else {
+        break
+      }
+    }
+
+    return [groupIndex, timePosition];
+  }
 
   touchStart = (e) => {
+
     if (e.touches.length === 2) {
       e.preventDefault()
 
@@ -241,7 +292,19 @@ export default class ReactCalendarTimeline extends Component {
       this.singleTouchStart = null
       this.lastSingleTouch = null
     } else if (e.touches.length === 1 && this.props.fixedHeader === 'fixed') {
-      e.preventDefault()
+      e.preventDefault();
+
+      if(this.lastTouchStart){
+        if(e.timeStamp - this.lastTouchStart < 400){
+          this.touchDoubleClick(e);
+        }else{
+          this.lastTouchStart = e.timeStamp;
+          this.touchClick(e);
+        }
+      }else{
+        this.lastTouchStart = e.timeStamp;
+        this.touchClick(e);
+      }
 
       let x = e.touches[0].clientX
       let y = e.touches[0].clientY
@@ -250,7 +313,9 @@ export default class ReactCalendarTimeline extends Component {
       this.singleTouchStart = {x: x, y: y, screenY: window.pageYOffset}
       this.lastSingleTouch = {x: x, y: y, screenY: window.pageYOffset}
     }
-  }
+  };
+
+
 
   touchMove = (e) => {
     if (this.state.dragTime || this.state.resizeTime) {
@@ -525,18 +590,29 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   rowAndTimeFromEvent (e) {
-    const { lineHeight, dragSnap } = this.props
-    const { width, visibleTimeStart, visibleTimeEnd } = this.state
+    const { canvasTimeStart, width, visibleTimeStart, visibleTimeEnd, groupTops, topOffset } = this.state
+    const zoom = visibleTimeEnd - visibleTimeStart
+    const canvasTimeEnd = canvasTimeStart + zoom * 3
+    const canvasWidth = width * 3
+    const { pageX, pageY } = e
+    const ratio = (canvasTimeEnd - canvasTimeStart) / canvasWidth
+    const boundingRect = this.refs.scrollComponent.getBoundingClientRect()
+    let timePosition = visibleTimeStart + ratio * (pageX - boundingRect.left)
+    if (this.props.dragSnap) {
+      timePosition = Math.round(timePosition / this.props.dragSnap) * this.props.dragSnap
+    }
 
-    const parentPosition = getParentPosition(e.currentTarget)
-    const x = e.clientX - parentPosition.x
-    const y = e.clientY - parentPosition.y
+    let groupIndex = 0
+    for (var key of Object.keys(groupTops)) {
+      var item = groupTops[key]
+      if (pageY - topOffset > item) {
+        groupIndex = parseInt(key, 10)
+      } else {
+        break
+      }
+    }
 
-    const row = Math.floor((y - (lineHeight * 2)) / lineHeight)
-    let time = Math.round(visibleTimeStart + x / width * (visibleTimeEnd - visibleTimeStart))
-    time = Math.floor(time / dragSnap) * dragSnap
-
-    return [row, time]
+    return [groupIndex, timePosition];
   }
 
   scrollAreaClick = (e) => {
@@ -546,7 +622,7 @@ export default class ReactCalendarTimeline extends Component {
       if (this.state.selectedItem) {
         this.selectItem(null)
       } else if (this.props.onCanvasClick) {
-        const [row, time] = this.rowAndTimeFromEvent(e)
+        const [row, time] = this.rowAndTimeFromEvent(e);
         if (row >= 0 && row < this.props.groups.length) {
           const groupId = _get(this.props.groups[row], this.props.keys.groupIdKey)
           this.props.onCanvasClick(groupId, time, e)
@@ -792,30 +868,9 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   handleDoubleClick = (e) => {
-    const { canvasTimeStart, width, visibleTimeStart, visibleTimeEnd, groupTops, topOffset } = this.state
-    const zoom = visibleTimeEnd - visibleTimeStart
-    const canvasTimeEnd = canvasTimeStart + zoom * 3
-    const canvasWidth = width * 3
-    const { pageX, pageY } = e
-    const ratio = (canvasTimeEnd - canvasTimeStart) / canvasWidth
-    const boundingRect = this.refs.scrollComponent.getBoundingClientRect()
-    let timePosition = visibleTimeStart + ratio * (pageX - boundingRect.left)
-    if (this.props.dragSnap) {
-      timePosition = Math.round(timePosition / this.props.dragSnap) * this.props.dragSnap
-    }
-
-    let groupIndex = 0
-    for (var key of Object.keys(groupTops)) {
-      var item = groupTops[key]
-      if (pageY - topOffset > item) {
-        groupIndex = parseInt(key, 10)
-      } else {
-        break
-      }
-    }
-
-    if (this.props.onCanvasDoubleClick) {
-      this.props.onCanvasDoubleClick(this.props.groups[groupIndex], timePosition, e)
+    const [row, time] = this.rowAndTimeFromEvent(e);
+    if (row >= 0 && row < this.props.groups.length && this.props.onCanvasDoubleClick) {
+      this.props.onCanvasDoubleClick(this.props.groups[row], time, e)
     }
   }
 

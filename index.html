@@ -76,7 +76,7 @@
       stackItems: true,
       itemHeightRatio: 0.75,
 
-      lineHeight: 100,
+      lineHeight: 50,
 
       defaultTimeStart: moment().startOf('day').toDate(),
       defaultTimeEnd: moment().startOf('day').add(1, 'day').toDate(),
@@ -92,8 +92,12 @@
         itemTimeEndKey: 'end'
       },
 
-      onCanvasClick: function(event) {
-        console.log("Canvas clicked");
+      onCanvasDoubleClick: function(groupid, time, event) {
+        console.log("DoubleClick", groupid);
+      },
+
+      onCanvasClick: function(groupid, time, event) {
+        console.log("SimpleClick", groupid);
       },
 
       onItemClick: function(item) {
