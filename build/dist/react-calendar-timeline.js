@@ -269,6 +269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'touchDoubleClick',
 	    value: function touchDoubleClick(e) {
 	      //if not clicking on an item
+	
 	      if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item')) {
 	        if (this.state.selectedItem) {
 	          this.selectItem(null);
@@ -282,6 +283,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.props.onCanvasDoubleClick(this.props.groups[row], time, e);
 	          }
 	        }
+	      } else {
+	        // console.log(e);
 	      }
 	    }
 	  }, {
@@ -1126,8 +1129,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  this.selectItem = function (item, clickType, e) {
 	    if (_this3.state.selectedItem === item || _this3.props.itemTouchSendsClick && clickType === 'touch') {
-	      if (item && _this3.props.onItemClick) {
-	        _this3.props.onItemClick(item, e);
+	      if (_this3.lastTouchStart) {
+	        if (e.timeStamp - _this3.lastTouchStart < 400) {
+	          if (item && _this3.props.onItemDoubleClick) {
+	            _this3.props.onItemDoubleClick(item, e);
+	          }
+	        } else {
+	          _this3.lastTouchStart = e.timeStamp;
+	          if (item && _this3.props.onItemClick) {
+	            _this3.props.onItemClick(item, e);
+	          }
+	        }
+	      } else {
+	        _this3.lastTouchStart = e.timeStamp;
+	        if (item && _this3.props.onItemClick) {
+	          _this3.props.onItemClick(item, e);
+	        }
 	      }
 	    } else {
 	      _this3.setState({ selectedItem: item });

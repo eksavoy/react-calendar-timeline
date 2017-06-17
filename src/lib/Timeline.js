@@ -249,6 +249,7 @@ export default class ReactCalendarTimeline extends Component {
 
   touchDoubleClick(e){
     //if not clicking on an item
+
     if(!hasSomeParentTheClass(e.target, 'rct-item')){
       if(this.state.selectedItem){
         this.selectItem(null);
@@ -258,6 +259,8 @@ export default class ReactCalendarTimeline extends Component {
           this.props.onCanvasDoubleClick(this.props.groups[row], time, e);
         }
       }
+    }else {
+      // console.log(e);
     }
   }
 
@@ -583,9 +586,24 @@ export default class ReactCalendarTimeline extends Component {
 
   selectItem = (item, clickType, e) => {
     if (this.state.selectedItem === item || (this.props.itemTouchSendsClick && clickType === 'touch')) {
-      if (item && this.props.onItemClick) {
-        this.props.onItemClick(item, e)
+      if(this.lastTouchStart){
+        if(e.timeStamp - this.lastTouchStart < 400){
+          if (item && this.props.onItemDoubleClick) {
+            this.props.onItemDoubleClick(item, e)
+          }
+        }else{
+          this.lastTouchStart = e.timeStamp;
+          if (item && this.props.onItemClick) {
+            this.props.onItemClick(item, e)
+          }
+        }
+      }else{
+        this.lastTouchStart = e.timeStamp;
+        if (item && this.props.onItemClick) {
+          this.props.onItemClick(item, e)
+        }
       }
+
     } else {
       this.setState({selectedItem: item})
       if (item && this.props.onItemSelect) {
